@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 class Admin
     {
-        // I also put the variable in private for a security porpoise (by put variables in private the other classes can't aware of this variable existance)
+        // I also put the variable in private for a security purpose (by put variables in private the other classes can't aware of this variable existance)
         private String adminName;  // create a variable to store admin name (I don't initialize the variable because it is an instance variable)
         private String adminPassword; //  create a variable to store admin password
         private static ArrayList<Transaction> transactionList = new ArrayList<>(); //  creating an arraylist to store admin transactions

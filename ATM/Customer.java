@@ -3,7 +3,7 @@ import java.util.ArrayList;
 class Customer
 {
     // create a variables to store customer account number, pin,balance and name (I don't initialize the variable because it is an instance variable)
-    // I also put the variable in private for a security porpoise (by put variables in private the other classes can't aware of this variable existance)
+    // I also put the variable in private for a security purpose (by put variables in private the other classes can't aware of this variable existance)
     private String accNo;
     private String pin;
     private double balance;
