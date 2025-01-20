@@ -1,2 +1,2 @@
-git commit _m "Deleted Admin.java"
+"Deleted Admin.java"
     
