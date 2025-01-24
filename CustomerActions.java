@@ -421,35 +421,46 @@ class CustomerActions
                         }
 
                         long tempValue=0;
-                        for(int index1=0; index1<=seats.length; index1++)
+                        for(int index1=0; index1<seats.length; index1++)
                         {
                             tempValue += seats[index1];
-                            userPointOfViewSeats[i] = tempValue;
+                            userPointOfViewSeats[index1] = tempValue;
                         }
 
                         if( seatColumn <= userPointOfViewSeats[0])
                         {
                             int seatIndex = seatColumn - 1;
-                            tempSeatsList.set(seatIndex, "×");
+                            if(!tempSeatsList.get(seatIndex).equals("×"))
+                            {
+                                tempSeatsList.set(seatColumn, "×");
+                            }
+                            else
+                            {
+                                System.out.println("This Seat Is Already Booked");
+                            }
                         }
                         else if(seatColumn > userPointOfViewSeats[0] && seatColumn <= userPointOfViewSeats[1])
                         {
-                            tempSeatsList.set(seatColumn, "×");
+                            if(!tempSeatsList.get(seatColumn).equals("×"))
+                            {
+                                tempSeatsList.set(seatColumn, "×");
+                            }
+                            else
+                            {
+                                System.out.println("This Seat Is Already Booked");
+                            }
                         }
                         else if(seatColumn > userPointOfViewSeats[1] && seatColumn <= userPointOfViewSeats[2])
                         {
                             int seatIndex = seatColumn + 1;
-                            tempSeatsList.set(seatIndex, "×");
-                        }
-                        else if(seatColumn > userPointOfViewSeats[2] && seatColumn <= userPointOfViewSeats[3])
-                        {
-                            int seatIndex = seatColumn + 2;
-                            tempSeatsList.set(seatIndex, "×");
-                        }
-                        else if(seatColumn > userPointOfViewSeats[3] && seatColumn <= userPointOfViewSeats[4])
-                        {
-                            int seatIndex = seatColumn + 3;
-                            tempSeatsList.set(seatIndex, "×");
+                            if(!tempSeatsList.get(seatIndex).equals("×"))
+                            {
+                                tempSeatsList.set(seatColumn, "×");
+                            }
+                            else
+                            {
+                                System.out.println("This Seat Is Already Booked");
+                            }
                         }
                     }
                     else
@@ -459,41 +470,52 @@ class CustomerActions
                         String[] splitGrid = grid.split("\\*");
                         long[] seats = new long[splitGrid.length];
                         long[] userPointOfViewSeats = new long[splitGrid.length];
-                        for(int n = 0; n <= splitGrid.length; n++)
+                        for(int n = 0; n < splitGrid.length; n++)
                         {
                             seats[n] = Long.parseLong(splitGrid[n]);
                         }
 
                         long tempValue=0;
-                        for(int index1=0; index1<=seats.length; index1++)
+                        for(int index1=0; index1<seats.length; index1++)
                         {
                             tempValue += seats[index1];
-                            userPointOfViewSeats[i] = tempValue;
+                            userPointOfViewSeats[index1] = tempValue;
                         }
 
                         if( seatColumn <= userPointOfViewSeats[0])
                         {
                             int seatIndex = seatColumn - 1;
-                            tempSeatsList.set(seatIndex, "×");
+                            if(!tempSeatsList.get(seatIndex).equals("×"))
+                            {
+                                tempSeatsList.set(seatColumn, "×");
+                            }
+                            else
+                            {
+                                System.out.println("This Seat Is Already Booked");
+                            }
                         }
                         else if(seatColumn > userPointOfViewSeats[0] && seatColumn <= userPointOfViewSeats[1])
                         {
-                            tempSeatsList.set(seatColumn, "×");
+                            if(!tempSeatsList.get(seatColumn).equals("×"))
+                            {
+                                tempSeatsList.set(seatColumn, "×");
+                            }
+                            else
+                            {
+                                System.out.println("This Seat Is Already Booked");
+                            }
                         }
                         else if(seatColumn > userPointOfViewSeats[1] && seatColumn <= userPointOfViewSeats[2])
                         {
                             int seatIndex = seatColumn + 1;
-                            tempSeatsList.set(seatIndex, "×");
-                        }
-                        else if(seatColumn > userPointOfViewSeats[2] && seatColumn <= userPointOfViewSeats[3])
-                        {
-                            int seatIndex = seatColumn + 2;
-                            tempSeatsList.set(seatIndex, "×");
-                        }
-                        else if(seatColumn > userPointOfViewSeats[3] && seatColumn <= userPointOfViewSeats[4])
-                        {
-                            int seatIndex = seatColumn + 3;
-                            tempSeatsList.set(seatIndex, "×");
+                            if(!tempSeatsList.get(seatIndex).equals("×"))
+                            {
+                                tempSeatsList.set(seatColumn, "×");
+                            }
+                            else
+                            {
+                                System.out.println("This Seat Is Already Booked");
+                            }
                         }
                         tempSeats.put(seatRow, tempSeatsList);
                     }
