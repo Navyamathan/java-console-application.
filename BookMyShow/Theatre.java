@@ -1,16 +1,15 @@
-import java.time.format.DateTimeFormatter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Theatre
 {
     private String theatreName;
     private String theatreLocation;
     private int screenCount;
-    private ArrayList<Screen> screenList = new ArrayList<>();
-    private static ArrayList<Show> showList = new ArrayList<>();
-    private static ArrayList<Movie> movieList = new ArrayList<>();
-    private static DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("dd_MM_yyyy");
-    private static DateTimeFormatter localTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private HashMap<String, Screen> screenHashMap = new HashMap<>();
+    private static HashMap<String, ArrayList<Movie>>  movieHashMap = new HashMap<>();
 
     public Theatre(String theatreName,String theatreLocation, int screenCount)
     {
@@ -34,29 +33,14 @@ public class Theatre
         return screenCount;
     }
 
-    public static DateTimeFormatter getLocalDateFormatter()
+    public HashMap<String, Screen> getScreenHashMap()
     {
-        return localDateFormatter;
+        return screenHashMap;
     }
 
-    public static DateTimeFormatter getLocalTimeFormatter()
+    public static HashMap<String, ArrayList<Movie>> getMovieHashMap()
     {
-        return localTimeFormatter;
-    }
-
-    public ArrayList<Screen> getScreenArrayList()
-    {
-        return screenList;
-    }
-
-    public static ArrayList<Show> getShowArrayList()
-    {
-        return showList;
-    }
-
-    public static ArrayList<Movie> getMovieArrayList()
-    {
-        return movieList;
+        return movieHashMap;
     }
 
 }

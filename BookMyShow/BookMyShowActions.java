@@ -1,78 +1,78 @@
 import java.util.Scanner;
 
+// class for manage the BookMyShow Actions
 class BookMyShowActions
 {
-    AdminActions a = new AdminActions();
-    CustomerActions c = new CustomerActions();
-    Scanner s = new Scanner(System.in);
+    static Scanner s = new Scanner(System.in); // create an object for scanner java built-in function to get the input from the user
 
-    public void start()
+    // method for to perform BookMyShow Actions
+    public static void start()
     {
+        System.out.println();
         System.out.println(".....BOOK MY SHOW.....");
 
         while (true)
         {
             System.out.println();
-            System.out.println("1. ADMIN \n2. CUSTOMER \n3. EXIT");
+            System.out.println("1. ADMIN \n2. CUSTOMER \n3. EXIT"); // print the choice
             System.out.print("Enter Your Choice: ");
-            int n = s.nextInt();
-            s.nextLine();
+            int n = Integer.parseInt(s.nextLine()); // get choice from the user
             System.out.println();
 
-            if (n == 1)
+            if (n == 1) // if the user choice is 1
             {
-                BookMyShow.getAdminArrayList().add(new Admin("Navya","1995"));
-                Admin currentAdmin = a.adminLogin(s);
+                BookMyShow.getAdminArrayList().add( new Admin("Navya","1995")); // add a default data to the Admin ArrayList
+                Admin currentAdmin = AdminActions.adminLogin(s); // call a adminLogin function and store value in the variable that function returns
 
-                if (currentAdmin != null )
+                if (currentAdmin != null ) // if currentAdmin is null
                 {
-                    if (currentAdmin.getPassword() == null)
+                    if (currentAdmin.getPassword() == null)  // if only currentAdmin password is null
                     {
                         System.out.println("Access Denied. You Have Used All Login Attempts!");
                     }
-                    else
+                    else // if the condition is false then else block will be executed
                     {
                         System.out.println();
                         System.out.println("Login Successful!");
-                       a.adminAction(s);
+                        AdminActions.adminAction(s); // after login call the adminActions to step into future process
                     }
                 }
-                else
+                else // if the condition is false then else block will be executed
                 {
                     System.out.println();
                     System.out.println("The Account Doesn't Exist!");
                 }
             }
 
-            else if (n == 2)
+            else if (n == 2) // if the user choice is 2
             {
-                Customer currentCustomer = c.loginProcess(s);
-                if (currentCustomer != null )
+                Customer currentCustomer = CustomerActions.loginProcess(s); // call a customerLogin function and store value in the variable that function returns
+                if (currentCustomer != null ) // if currentCustomer is null
                 {
-                    if (currentCustomer.getPassword() == null)
+                    if (currentCustomer.getPassword() == null) // if only currentCustomer password is null
                     {
                         System.out.println("Access Denied. You Have Used All Login Attempts!");
                     }
-                    else
+                    else // if the condition is false then else block will be executed
                     {
                         System.out.println();
                         System.out.println("Login Successful!");
-                       // c.customerAction(s, currentCustomer);
+                        CustomerActions.customerAction(s, currentCustomer); // after login call the customerActions to step into future process
                     }
                 }
-                else
+                else // if the condition is false then else block will be executed
                 {
                     System.out.println();
                     System.out.println("The Account Doesn't Exist!");
                 }
             }
 
-            else if (n == 3)
+            else if (n == 3) // if the user choice is 3
             {
-                break;
+                break; // breaks the while loop
             }
 
-            else
+            else // if the condition is false then else block will be executed
             {
                 System.out.println("Enter A Valid Input! ");
             }
