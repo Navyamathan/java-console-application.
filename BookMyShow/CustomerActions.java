@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 // creating a class for the Admin Actions
@@ -100,7 +101,29 @@ class CustomerActions
     // function to display the choices and execute based on the choices the user give
     public static void customerAction(Scanner s,Customer currentCustomer)
     {
-        availableMovies(s,currentCustomer);
+        while(true)
+        {
+            System.out.println();
+            System.out.println("1. AVAILABLE MOVIES\n2. VIEW TICKETS\n3. EXIT"); // print the choices
+            System.out.print("Enter Your Choice: ");
+            int choice = Integer.parseInt(s.nextLine()); // get the choice
+            if(choice == 1)
+            {
+                availableMovies(s,currentCustomer);
+            }
+            else if(choice == 2)
+            {
+                viewTicket(currentCustomer);
+            }
+            else if(choice == 3)
+            {
+                break;
+            }
+            else
+            {
+                System.out.println("Enter The Valid Choice!");
+            }
+        }
     }
 
     // method to print available movies
@@ -142,50 +165,69 @@ class CustomerActions
             System.out.println("Do You Want To Change Your Location Or Date?");
             System.out.print("(yes/no): ");
             String choice = s.nextLine(); // get the user choice
-            if(choice.equals("yes")) // if your choice is yes then the changeDateOrLocation will the called
+            if(choice.equalsIgnoreCase("yes")) // if your choice is yes then the changeDateOrLocation will the called
             {
                int flag = changeDateOrLocation(s,currentCustomer); // call the changeDateOrLocation method and store the integer value in the flag variable that the function returns
                if(flag!=0) // if flag is not equal to one means that the available movies are printed already
                {
-                   System.out.println();
-                   System.out.print("Enter The Movie You Want To Book: ");
-                   String selectedMovie = s.nextLine(); // get the movie name which user want from the printed available movies
-
-                   for(ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
+                   boolean selectedMovieIsCorrect = false;
+                   while(true)
                    {
-                       for (Movie tempMovie : tempMovieList)
+                       System.out.println();
+                       System.out.print("Enter The Movie You Want To Book: ");
+                       String selectedMovie = s.nextLine(); // get the movie name which user want from the printed available movies
+
+                       for(ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
                        {
-                           // checks if the given selected movie name in the tempMovie Arraylist
-                           if (tempMovie.getMovieName().equals(selectedMovie))
+                           for (Movie tempMovie : tempMovieList)
                            {
-                               ticketBooking(s, tempMovieList); // and call the ticketBooking function for future process
-                               break;
+                               // checks if the given selected movie name in the tempMovie Arraylist
+                               if (tempMovie.getMovieName().equals(selectedMovie))
+                               {
+                                   selectedMovieIsCorrect = true;
+                                   ticketBooking(s, tempMovieList,currentCustomer); // and call the ticketBooking function for future process
+                                   return;
+                               }
                            }
+                       }
+                       if(!selectedMovieIsCorrect)
+                       {
+                           System.out.println("Enter The Valid Movie Name!");
                        }
                    }
                }
+               break;
             }
-            else if(choice.equals("no"))
+            else if(choice.equalsIgnoreCase("no"))
             {
+                boolean selectedMovieIsCorrect = false;
                 if(movieFound)
                 {
-                    System.out.println();
-                    System.out.print("Enter The Movie You Want To Book: ");
-                    String selectedMovie = s.nextLine(); // get the movie name which user want from the printed available movies
-                    for(ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
+                   while(true)
                     {
-                        for(Movie tempMovie : tempMovieList)
+                        System.out.println();
+                        System.out.print("Enter The Movie You Want To Book: ");
+                        String selectedMovie = s.nextLine(); // get the movie name which user want from the printed available movies
+                        for(ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
                         {
-                            // checks if the given selected movie name in the tempMovie Arraylist
-                            if (tempMovie.getMovieName().equals(selectedMovie))
+                            for(Movie tempMovie : tempMovieList)
                             {
-                                ticketBooking(s, tempMovieList); // and call the ticketBooking function for future process
-                                break;
+                                // checks if the given selected movie name in the tempMovie Arraylist
+                                if (tempMovie.getMovieName().equals(selectedMovie))
+                                {
+                                    selectedMovieIsCorrect = true;
+                                    ticketBooking(s, tempMovieList,currentCustomer); // and call the ticketBooking function for future process
+                                    return;
+                                }
                             }
+                        }
+                        if(!selectedMovieIsCorrect)
+                        {
+                            System.out.println("Enter The Valid Movie Name!");
                         }
                     }
                 }
-                break; // break the while loop
+                break;
             }
             else
             {
@@ -198,127 +240,132 @@ class CustomerActions
     public static int changeDateOrLocation(Scanner s,Customer currentCustomer)
     {
         System.out.println();
-        System.out.println("1. CHANGE DATE\n2. CHANGE LOCATION\n3. CHANGE BOTH"); // print the choices
+        System.out.println("1. CHANGE DATE\n2. CHANGE LOCATION\n3. CHANGE BOTH\n4. EXIT"); // print the choices
         System.out.print("Enter Your Choice: ");
         int choice = Integer.parseInt(s.nextLine()); // get the choice
         boolean movieFound = false;
         ArrayList<String> printedMovies = new ArrayList<>(); // stores the already printed data to later check that data are not repeatedly printed
-        if(choice == 1)
+        while(true)
         {
-            System.out.println();
-            System.out.print("Enter The Date: ");
-            String date = s.nextLine(); // get the date that customer wants to change
-            LocalDate localDate = LocalDate.parse(date,BookMyShow.getLocalDateFormatter());
-            System.out.println();
-            for(ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
+            if (choice == 1)
             {
-                for(Movie tempMovie : tempMovieList)
+                System.out.println();
+                System.out.print("Enter The Date: ");
+                String date = s.nextLine(); // get the date that customer wants to change
+                LocalDate localDate = LocalDate.parse(date, BookMyShow.getLocalDateFormatter());
+                System.out.println();
+                for (ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
                 {
-                    // checks if the customer location and current date is equals to the data in the tempMovie
-                    if(tempMovie.getShow().getLocation().equals(currentCustomer.getLocation()) && tempMovie.getShow().getDate().equals(localDate))
+                    for (Movie tempMovie : tempMovieList)
                     {
-                        if(!movieFound)
+                        // checks if the customer location and current date is equals to the data in the tempMovie
+                        if (tempMovie.getShow().getLocation().equals(currentCustomer.getLocation()) && tempMovie.getShow().getDate().equals(localDate)) {
+                            if (!movieFound)
+                            {
+                                System.out.println("Available Movies...");
+                                movieFound = true;
+                            }
+                            // checks that current movie name is not already exist in the printedMovies arrayList(because we store printed movies in this arrayList)
+                            if (!printedMovies.contains(tempMovie.getMovieName())) {
+                                System.out.println("* " + tempMovie.getMovieName()); // print the movie name(which is not already printed)
+                                printedMovies.add(tempMovie.getMovieName()); // after print the movie name it will add to the printedMovie arrayList to check it later
+                            }
+                        }
+                    }
+                }
+                if (!movieFound) // if movieFound is false then  in customer's location and date there is no available movies
+                {
+                    System.out.println("No Available Movie In The Date You Gave Enter A Valid Date!");
+                    continue;
+                }
+                return 1;
+            }
+            else if (choice == 2)
+            {
+                System.out.println();
+                LocalDate currentDate = LocalDate.now(); // gets the current date
+                System.out.print("Enter The Location: ");
+                String changeLocation = s.nextLine(); // get the location that customer wants to change
+                System.out.println();
+                for (ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
+                {
+                    for (Movie tempMovie : tempMovieList)
+                    {
+                        // checks if the customer location and current date is equals to the data in the tempMovie
+                        if (tempMovie.getShow().getLocation().equals(changeLocation) && tempMovie.getShow().getDate().equals(currentDate))
+                        {
+                            if (!movieFound)
+                            {
+                                System.out.println("Available Movies...");
+                                movieFound = true;
+                            }
+                            // checks that current movie name is not already exist in the printedMovies arrayList(because we store printed movies in this arrayList)
+                            if (!printedMovies.contains(tempMovie.getMovieName()))
+                            {
+                                System.out.println("* " + tempMovie.getMovieName()); // print the movie name(which is not already printed)
+                                printedMovies.add(tempMovie.getMovieName()); // after print the movie name it will add to the printedMovie arrayList to check it later
+                            }
+                        }
+                    }
+                }
+                if (!movieFound) // if movieFound is false then  in customer's location and date there is no available movies
+                {
+                    System.out.println("No Available Movie In The Location You Gave Enter A Valid Location!");
+                    continue;
+                }
+                return 1;
+            }
+            else if (choice == 3)
+            {
+                System.out.println();
+                System.out.print("Enter The Date: ");
+                String date = s.nextLine(); // get the date that customer wants to change
+                LocalDate localDate = LocalDate.parse(date, BookMyShow.getLocalDateFormatter());
+                System.out.print("Enter The Location: ");
+                String location = s.nextLine(); // get the location that customer wants to change
+                System.out.println();
+                for (ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
+                {
+                    for (Movie tempMovie : tempMovieList)
+                    {
+                        if (!movieFound)
                         {
                             System.out.println("Available Movies...");
-                            movieFound =true;
+                            movieFound = true;
                         }
-                        // checks that current movie name is not already exist in the printedMovies arrayList(because we store printed movies in this arrayList)
-                        if(!printedMovies.contains(tempMovie.getMovieName()))
+                        // checks if the customer location and current date is equals to the data in the tempMovie
+                        if (tempMovie.getShow().getLocation().equals(location) && tempMovie.getShow().getDate().equals(localDate))
                         {
-                            System.out.println("* "+tempMovie.getMovieName()); // print the movie name(which is not already printed)
-                            printedMovies.add(tempMovie.getMovieName()); // after print the movie name it will add to the printedMovie arrayList to check it later
+                            // checks that current movie name is not already exist in the printedMovies arrayList(because we store printed movies in this arrayList)
+                            if (!printedMovies.contains(tempMovie.getMovieName()))
+                            {
+                                System.out.println("* " + tempMovie.getMovieName()); // print the movie name(which is not already printed)
+                                printedMovies.add(tempMovie.getMovieName()); // after print the movie name it will add to the printedMovie arrayList to check it later
+                            }
                         }
                     }
                 }
-            }
-            if(!movieFound) // if movieFound is false then  in customer's location and date there is no available movies
-            {
-                System.out.println("No Available Movie!");
-                return 0;
-            }
-            return 1;
-        }
-        else if(choice == 2)
-        {
-            System.out.println();
-            LocalDate currentDate = LocalDate.now(); // gets the current date
-            System.out.print("Enter The Location: ");
-            String changeLocation = s.nextLine(); // get the location that customer wants to change
-            System.out.println();
-            for (ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
-            {
-                for (Movie tempMovie : tempMovieList)
+                if (!movieFound) // if movieFound is false then  in customer's location and date there is no available movies
                 {
-                    // checks if the customer location and current date is equals to the data in the tempMovie
-                    if (tempMovie.getShow().getLocation().equals(changeLocation) && tempMovie.getShow().getDate().equals(currentDate))
-                    {
-                        if(!movieFound)
-                        {
-                            System.out.println("Available Movies...");
-                            movieFound =true;
-                        }
-                        // checks that current movie name is not already exist in the printedMovies arrayList(because we store printed movies in this arrayList)
-                        if (!printedMovies.contains(tempMovie.getMovieName()))
-                        {
-                            System.out.println("* " + tempMovie.getMovieName()); // print the movie name(which is not already printed)
-                            printedMovies.add(tempMovie.getMovieName()); // after print the movie name it will add to the printedMovie arrayList to check it later
-                        }
-                    }
+                    System.out.println("No Available Movie!In The Date And Location You Gave Enter A Valid Date And Location!");
+                    continue;
                 }
+                return 1;
             }
-            if (!movieFound) // if movieFound is false then  in customer's location and date there is no available movies
+            else if(choice == 4)
             {
-                System.out.println("No Available Movie!");
-                return 0;
+                break;
             }
-            return 1;
-        }
-        else if(choice == 3)
-        {
-            System.out.println();
-            System.out.print("Enter The Date: ");
-            String date = s.nextLine(); // get the date that customer wants to change
-            LocalDate localDate = LocalDate.parse(date,BookMyShow.getLocalDateFormatter());
-            System.out.print("Enter The Location: ");
-            String location = s.nextLine(); // get the location that customer wants to change
-            System.out.println();
-            for(ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
+            else
             {
-                for(Movie tempMovie : tempMovieList)
-                {
-                    if(!movieFound)
-                    {
-                        System.out.println("Available Movies...");
-                        movieFound =true;
-                    }
-                    // checks if the customer location and current date is equals to the data in the tempMovie
-                    if(tempMovie.getShow().getLocation().equals(location) && tempMovie.getShow().getDate().equals(localDate))
-                    {
-                        // checks that current movie name is not already exist in the printedMovies arrayList(because we store printed movies in this arrayList)
-                        if(!printedMovies.contains(tempMovie.getMovieName()))
-                        {
-                            System.out.println("* "+tempMovie.getMovieName()); // print the movie name(which is not already printed)
-                            printedMovies.add(tempMovie.getMovieName()); // after print the movie name it will add to the printedMovie arrayList to check it later
-                        }
-                    }
-                }
+                System.out.println("You Enter The InValid Choice!");
             }
-            if(!movieFound) // if movieFound is false then  in customer's location and date there is no available movies
-            {
-                System.out.println("No Available Movie!");
-                return 0;
-            }
-            return 1;
         }
-        else
-        {
-            System.out.println("You Enter The InValid Choice!");
-            return 0;
-        }
+        return 0;
     }
 
     // method for ticket booking
-    public static void ticketBooking(Scanner s, ArrayList<Movie> selectedMovie)
+    public static void ticketBooking(Scanner s, ArrayList<Movie> selectedMovie,Customer currentCustomer)
     {
         label : while(true)
         {
@@ -332,7 +379,8 @@ class CustomerActions
                 // checks that current theatre name is not already exist in the printedTheatres arrayList(because we store printed theatres in this arrayList)
                 if (!printedTheatres.contains(tempMovie.getTheatre().getTheatreName()))
                 {
-                    if (!theatreFound) {
+                    if (!theatreFound)
+                    {
                         System.out.println("Available Theatres...");
                         theatreFound = true;
                     }
@@ -358,7 +406,7 @@ class CustomerActions
                         showsFound =true;
                     }
                     System.out.println("* "+tempMovie.getScreen().getScreenName());  // print the screen name(which is not already printed)
-                    System.out.println("* "+tempMovie.getShow().getStartingTime()+" - "+tempMovie.getShow().getEndingTime()); // print the show's startingTime and endingTime (which is not already printed)
+                    System.out.println("* "+tempMovie.getShow().getStartingTime()); // print the show's startingTime and endingTime (which is not already printed)
                     System.out.println("--------------------------");
                 }
             }
@@ -371,13 +419,12 @@ class CustomerActions
             while(true)
             {
                 System.out.print("Enter The Timing You Want: ");
-                String timing= s.nextLine(); // get the showtime that user want
+                String startingTime = s.nextLine(); // get the show starting time
+                LocalTime localStartingTime = LocalTime.parse(startingTime,BookMyShow.getLocalTimeFormatter());
                 for(Movie tempMovie : selectedMovie)
                 {
-                    // here store the current showtime as a String to compare with the user choose showtime
-                    String tempTiming =tempMovie.getShow().getStartingTime()+" - "+tempMovie.getShow().getEndingTime();
                     // checks if the user given timing and screen name is in the tempMovie
-                    if(tempTiming.equals(timing))
+                    if(localStartingTime.equals(tempMovie.getShow().getStartingTime()))
                     {
                         enteredShowIsCorrect = true;
                         System.out.println("Available seats: ");
@@ -393,17 +440,12 @@ class CustomerActions
                                 System.out.println("Enter The Valid Seat Count!");
                                 continue;
                             }
-                            String[] seatNumbers = new String[seatsCount]; // store the seat Numbers that customer gave
-                            for (int i = 0; i < seatsCount; i++)  // for loop to get the seat numbers
-                            {
-                                System.out.print("Enter " + (i + 1) + " Seat Number: ");
-                                seatNumbers[i] = s.nextLine(); // get the seat numbers
-                            }
+                            Tickets tickets = new Tickets(tempMovie.getTheatre().getTheatreName(),tempMovie.getMovieName(),tempMovie.getTheatre().getTheatreLocation(),tempMovie.getScreen().getScreenName(),tempMovie.getShow().getStartingTime(),tempMovie.getShow().getPrice() * seatsCount);
+                            int status = selectSeats(s,tempMovie.getScreen().getSeatsCount(), seatsCount, tempMovie.getScreen().getGrid(), tempMovie.getShow().getSeatsGrid(),tickets);
                             // call selectedSeats function to calculate and identify and update the given seatNumbers in a proper way (and also stores the value that the function returns)
-                            int status = selectSeats(s, tempMovie.getScreen().getGrid(), tempMovie.getShow().getSeatsGrid(), seatNumbers);
                             if (status == 1) // if status is equal to 1
                             {
-                                Utilities.printSeats(tempMovie.getShow().getSeatsGrid());
+                                currentCustomer.getTicketList().add(tickets);
                                 System.out.println("Ticket Booked Successfully!");
                                 break label;
                             }
@@ -411,7 +453,7 @@ class CustomerActions
                             {
                                 System.out.println("This Seats Is Already Booked!");
                             }
-                            else if(status == -2)
+                            else if (status == -2)
                             {
                                 break label;
                             }
@@ -431,7 +473,7 @@ class CustomerActions
     }
 
     // method to calculate,identify and update the given seatNumbers in a proper way in a seatsGrid HashMap
-    public static int selectSeats( Scanner s,String grid, HashMap<Character, ArrayList<String>> seatsGrid, String[] seatNumber)
+    public static int selectSeats( Scanner s,int screenSeatsCount,int seatsCount, String grid, HashMap<Character, ArrayList<String>> seatsGrid,Tickets tickets)
     {
         // create a HashMap to store the values grids like a duplicate one(we use this hashMap to first edit the changes in it and then ask the confirmation from the user and then add that changes in the duplicate to seats grid)
         HashMap<Character,ArrayList<String>> duplicateSeats = new HashMap<>();
@@ -445,12 +487,22 @@ class CustomerActions
             duplicateSeats.put(key,values); // store key and values in a duplicateSeats
         }
 
-        // this for loop iterates each seatNumbers one by one to calculate
-        for(String tempSeatNumber : seatNumber)
+        String[] seatNumbers = new String[seatsCount];
+        int i=0;
+        while (seatsCount > 0)
         {
+            System.out.println();
+            System.out.print("Enter Seat Number " + (i+1) + ": ");
+            String seatNumber = s.nextLine(); // get the seat numbers
+            seatNumbers[i] = seatNumber;
             // separate the seat row and numbers of a tempSeats by CharAt() to get the seat row (character) and use subString() to get the seat number (int)
-            char seatRow = tempSeatNumber.charAt(0);
-            int seat_number = Integer.parseInt(tempSeatNumber.substring(1));
+            char seatRow = seatNumber.charAt(0);
+            int seat_number = Integer.parseInt(seatNumber.substring(1));
+
+            if (seat_number <= 0 || seat_number > screenSeatsCount) // checks if the seat_number is greater than zero or seat_number greater than the total seatsCount to verify that seat_number is valid or not
+            {
+                return 0;
+            }
 
             // checks if the generated seat row is in the seatsGrid
             if (seatsGrid.containsKey(seatRow))
@@ -458,8 +510,7 @@ class CustomerActions
                 String[] splitGrid = grid.split("\\*"); // use split methode to separate * from the grid and each one separately
                 long[] seats = new long[splitGrid.length];
                 // for loop to convert grids String to long one by one
-                for (int k = 0; k < splitGrid.length; k++)
-                {
+                for (int k = 0; k < splitGrid.length; k++) {
                     seats[k] = Long.parseLong(splitGrid[k]);
                 }
 
@@ -469,11 +520,6 @@ class CustomerActions
                 {
                     tempValue += seats[l];
                     userPointOfViewSeats[l] = tempValue;
-                }
-
-                if (seat_number < 0 || seat_number > tempValue) // checks if the seat_number is greater than zero or seat_number greater than the tempValues to verify that seat_number is valid or not
-                {
-                    return 0;
                 }
 
                 // condition check that how can index can calculate for seat_numbers based on the which position it placed at
@@ -490,7 +536,6 @@ class CustomerActions
                 {
                     index = seat_number + 1;
                 }
-
                 // after calculate the index here checks and change the seats by where it is booked seats or not for future process
                 ArrayList<String> selectedSeat = seatsGrid.get(seatRow); // temp seats arraylist to store the changes
                 if (selectedSeat.get(index).equals("×")) // if × find then it is booked seat
@@ -500,46 +545,74 @@ class CustomerActions
                 else
                 {
                     selectedSeat.set(index, "×"); // set the seat index as × to book the tickets
+
                 }
-                duplicateSeats.put(seatRow,selectedSeat); // after checked by many condition is it still true then it add to the hashMap duplicateSets
+                duplicateSeats.put(seatRow, selectedSeat); // after checked by many condition is it still true then it add to the hashMap duplicateSets
+                Utilities.printSeats(duplicateSeats);
+            }
+            seatsCount--;
+            i++;
+        }
+        while(true)
+        {
+            System.out.println();
+            System.out.println("Do You Want Book The Tickets?");
+            System.out.print("(yes/no): ");
+            String choice = s.nextLine(); // get a choice to finally verify that the user want to book tickets
+            if(choice.equalsIgnoreCase("yes"))
+            {
+                tickets.setBookedSeats(seatNumbers);
+                // for loop to store changes of duplicateSeats updated to seatsGrid by entrySet method
+                for(Map.Entry<Character,ArrayList<String>> entry : duplicateSeats.entrySet())
+                {
+                    Character key = entry.getKey();
+                    if(seatsGrid.containsKey(key))
+                    {
+                        seatsGrid.put(key,entry.getValue());
+                    }
+                }
+                System.out.println("Booked Seats: ");
+                Utilities.printSeats(seatsGrid);
+                return 1; // if successfully updated return 1
+            }
+            else if(choice.equalsIgnoreCase("no"))
+            {
+                System.out.println("Ticket Booking Canceled!");
+                return -2;
+            }
+            else
+            {
+                System.out.println("Enter The Valid Data!");
             }
         }
-        if(!duplicateSeats.isEmpty()) // checks if the duplicateSeats is not empty because than only we can understand that it is edited or not( if edited(!null) it is valid -- if not edited(null) it is in valid )
+    }
+
+    public static void viewTicket(Customer currentCustomer)
+    {
+        for(Tickets tempTicket : currentCustomer.getTicketList())
         {
-            // for loop to print edited duplicateSeats by entrySet method
-            for(Map.Entry<Character,ArrayList<String>> entry : duplicateSeats.entrySet())
+            System.out.println();
+            System.out.println("Theatre: "+tempTicket.getTheatreName());
+            System.out.println("Movie: "+tempTicket.getMovieName());
+            System.out.println("Location: "+tempTicket.getLocation());
+            System.out.println("Screen: "+tempTicket.getScreenName());
+            System.out.println("Show Time: "+tempTicket.getStartingTime());
+            System.out.println("Ticket Price: "+tempTicket.getTicketPrice());
+            System.out.print("Booked Seats: [ ");
+            for(int i = 0; i < tempTicket.getBookedSeats().length; i++)
             {
-                System.out.println(entry.getKey()+":"+entry.getValue());
-            }
-            while(true)
-            {
-                System.out.println("Do You Want Book The Tickets?");
-                System.out.print("(yes/no): ");
-                String choice = s.nextLine(); // get a choice to finally verify that the user want to book tickets
-                if(choice.equalsIgnoreCase("yes"))
+                System.out.print(tempTicket.getBookedSeats()[i]);
+                if(i == tempTicket.getBookedSeats().length-1)
                 {
-                    // for loop to store changes of duplicateSeats updated to seatsGrid by entrySet method
-                    for(Map.Entry<Character,ArrayList<String>> entry : duplicateSeats.entrySet())
-                    {
-                        Character key = entry.getKey();
-                        if(seatsGrid.containsKey(key))
-                        {
-                            seatsGrid.put(key,entry.getValue());
-                        }
-                    }
-                    return 1; // if successfully updated return 1
-                }
-                else if(choice.equalsIgnoreCase("no"))
-                {
-                    return -2;
+                    System.out.print(" ]");
                 }
                 else
                 {
-                    System.out.println("Enter The Valid Data!");
+                    System.out.print(", ");
                 }
             }
+            System.out.println();
         }
-        return 0;
     }
 
 }

@@ -255,7 +255,7 @@ class AdminActions
             LocalTime localEndingTime = localStartingTime.plusHours(localTime.getHour()).plusMinutes(localTime.getMinute()).plusMinutes(30); // calculate the endTime by the given startingTime
             for (Show tempShow : screen.getShowHashSet())
             {
-                if (!tempShow.getStartingTime().isAfter(localEndingTime) || !tempShow.getEndingTime().isBefore(localStartingTime))
+                if (!tempShow.getStartingTime().isBefore(localEndingTime) && !tempShow.getEndingTime().isAfter(localStartingTime))
                 {
                     flag = true;
                 }

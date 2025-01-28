@@ -21,7 +21,7 @@ class BookMyShowActions
 
             if (n == 1) // if the user choice is 1
             {
-                BookMyShow.getAdminArrayList().add( new Admin("Navya","1995")); // add a default data to the Admin ArrayList
+                BookMyShow.getAdminArrayList().add( new Admin("ADMIN","123")); // add a default data to the Admin ArrayList
                 Admin currentAdmin = AdminActions.adminLogin(s); // call a adminLogin function and store value in the variable that function returns
 
                 if (currentAdmin != null ) // if currentAdmin is null
@@ -57,6 +57,7 @@ class BookMyShowActions
                     {
                         System.out.println();
                         System.out.println("Login Successful!");
+                        CustomerActions.availableMovies(s,currentCustomer);
                         CustomerActions.customerAction(s, currentCustomer); // after login call the customerActions to step into future process
                     }
                 }

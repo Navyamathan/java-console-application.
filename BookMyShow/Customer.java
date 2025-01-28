@@ -1,8 +1,11 @@
+import java.util.ArrayList;
+
 public class Customer
 {
     private String userName;
     private String password;
     private String location;
+    private ArrayList<Tickets> ticketList = new ArrayList<>();
 
     public Customer(String userName, String password, String location)
     {
@@ -26,5 +29,9 @@ public class Customer
         return location;
     }
 
+    public ArrayList<Tickets> getTicketList()
+    {
+        return ticketList;
+    }
 
 }
