@@ -1,25 +1,30 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 // creating a class for the Admin Actions
 class CustomerActions
 {
     //this function manage the log in process by displaying the choices and execute based on the choices the user give
-    public static Customer loginProcess(Scanner s)
+    public static Customer loginProcess()
     {
+        System.out.println();
+        System.out.println("WELCOME TO CUSTOMER LOGIN SYSTEM...");
+        System.out.println();
         Customer status;
         System.out.println("1. SIGN UP\n2. LOGIN\n3. EXIT"); // print the choices
         System.out.print("Enter Your Choice: ");
-        int choice = Integer.parseInt(s.nextLine()); // get the choice
+        int choice = Integer.parseInt(BookMyShowActions.s.nextLine()); // get the choice
         if(choice==1)
         {
-            status = signUp(s); // calls the singUp function (user will select signUp when user don't ever log in)
+            status = signUp(); // calls the singUp function (user will select signUp when user don't ever log in)
             return status;
         }
         else if(choice==2)
         {
-            status = login(s); // calls the login function (user will select login when user have already login)
+            status = login(); // calls the login function (user will select login when user have already login)
             return status;
         }
         else if(choice==3)
@@ -34,51 +39,40 @@ class CustomerActions
     }
 
     //this function manage the log in process
-    public static Customer login(Scanner s) // get the parameters values when this function call (this function also returns the object Customer)
+    public static Customer login() // get the parameters values when this function call (this function also returns the object Customer)
     {
-        int attempts = 0; // variable to manage the attempts of login process
-        System.out.println();
-        System.out.println("WELCOME TO CUSTOMER LOGIN SYSTEM...");
-
+        System.out.println("To Login Enter The Following Details...");
         for (Customer tempAccount : BookMyShow.getCustomerArrayList())  // for loop for checking the username and password one by one in the Customer arraylist
         {
-            while (attempts < 3) // this loop will exit when attempts is greater than 3
+            while(true)
             {
                 System.out.println();
                 System.out.print("Enter User Name: ");
-                String accNo = s.nextLine(); // get the userName
+                String accNo = BookMyShowActions.s.nextLine(); // get the userName
                 if (accNo.equals(tempAccount.getUserName())) // checks if the userName is Customer ArrayList
                 {
                     System.out.print("Enter Password: ");
-                    String pin = s.nextLine(); // get the password
+                    String pin = BookMyShowActions.s.nextLine(); // get the password
                     if (pin.equals(tempAccount.getPassword())) // checks if the password is Customer ArrayList
                     {
                         return tempAccount; // return the Customer object
                     }
                     else // if the password is wrong
                     {
-                        attempts++; // increment the attempts
-                        System.out.println();
-                        System.out.println("Wrong Password!");
-                        if (attempts == 3) // if attempts is equal to 3
-                        {
-                            Customer ob = new Customer(null, null,null); // create a new Customer object a values of null
-                            return ob; // return the empty object
-                        }
+                        System.out.println("Enter The Valid Password!");
                     }
                 }
                 else // if userName is wrong then else will be executed
                 {
                     return null;  // return object null
                 }
-
             }
         }
         return null;  //return null as a default
     }
 
     //this function manage the log in process
-    public static Customer signUp(Scanner s)
+    public static Customer signUp()
     {
         String userName;
         String password;
@@ -87,11 +81,11 @@ class CustomerActions
         System.out.println("To Sign Up Enter The Following Details...");
         System.out.println();
         System.out.print("Enter User Name: ");
-        userName = s.nextLine(); // get the userName
+        userName = BookMyShowActions.s.nextLine(); // get the userName
         System.out.print("Enter Password: ");
-        password = s.nextLine(); // get the password
+        password = BookMyShowActions.s.nextLine(); // get the password
         System.out.print("Enter Location: ");
-        location = s.nextLine(); // get the customer location
+        location = BookMyShowActions.s.nextLine(); // get the customer location
         // after get all the customer, create a Customer object type variable and store customer details in it
         Customer temp = new Customer(userName,password,location);
         BookMyShow.getCustomerArrayList().add(temp); // add temp into Customer ArrayList
@@ -99,17 +93,17 @@ class CustomerActions
     }
 
     // function to display the choices and execute based on the choices the user give
-    public static void customerAction(Scanner s,Customer currentCustomer)
+    public static void customerAction(Customer currentCustomer)
     {
         while(true)
         {
             System.out.println();
             System.out.println("1. AVAILABLE MOVIES\n2. VIEW TICKETS\n3. EXIT"); // print the choices
             System.out.print("Enter Your Choice: ");
-            int choice = Integer.parseInt(s.nextLine()); // get the choice
+            int choice = Integer.parseInt(BookMyShowActions.s.nextLine()); // get the choice
             if(choice == 1)
             {
-                availableMovies(s,currentCustomer); // call availableMovies method to print all the available movies and future process
+                availableMovies(currentCustomer); // call availableMovies method to print all the available movies and future process
             }
             else if(choice == 2)
             {
@@ -127,7 +121,7 @@ class CustomerActions
     }
 
     // method to print available movies
-    public static void availableMovies(Scanner s,Customer currentCustomer)
+    public static void availableMovies(Customer currentCustomer)
     {
         ArrayList<String> printedMovies = new ArrayList<>(); // stores the already printed data to later check that data are not repeatedly printed
         boolean movieFound = false;
@@ -164,10 +158,10 @@ class CustomerActions
             System.out.println();
             System.out.println("Do You Want To Change Your Location Or Date?");
             System.out.print("(yes/no): ");
-            String choice = s.nextLine(); // get the user choice
+            String choice = BookMyShowActions.s.nextLine(); // get the user choice
             if(choice.equalsIgnoreCase("yes")) // if user choice is yes then the changeDateOrLocation will be called and then call ticketBooking method
             {
-               int flag = changeDateOrLocation(s,currentCustomer); // call the changeDateOrLocation method and store the integer value in the flag variable that the function returns
+               int flag = changeDateOrLocation(currentCustomer); // call the changeDateOrLocation method and store the integer value in the flag variable that the function returns
                if(flag!=0) // if flag is not equal to one means that the available movies are printed already
                {
                    boolean selectedMovieIsCorrect = false;
@@ -175,7 +169,7 @@ class CustomerActions
                    {
                        System.out.println();
                        System.out.print("Enter The Movie You Want To Book: ");
-                       String selectedMovie = s.nextLine(); // get the movie name which user want from the printed available movies
+                       String selectedMovie = BookMyShowActions.s.nextLine(); // get the movie name which user want from the printed available movies
 
                        for(ArrayList<Movie> tempMovieList : BookMyShow.getMovieHashMap().values())
                        {
@@ -185,7 +179,7 @@ class CustomerActions
                                if (tempMovie.getMovieName().equals(selectedMovie))
                                {
                                    selectedMovieIsCorrect = true;
-                                   ticketBooking(s, tempMovieList,currentCustomer); // and call the ticketBooking function for future process
+                                   ticketBooking(tempMovieList,currentCustomer); // and call the ticketBooking function for future process
                                    return;
                                }
                            }
@@ -208,7 +202,7 @@ class CustomerActions
                     {
                         System.out.println();
                         System.out.print("Enter The Movie You Want To Book: ");
-                        String selectedMovie = s.nextLine(); // get the movie name which user want from the printed available movies
+                        String selectedMovie = BookMyShowActions.s.nextLine(); // get the movie name which user want from the printed available movies
                         for(ArrayList<Movie> tempMovieList : BookMyShow.getMovieHashMap().values())
                         {
                             for(Movie tempMovie : tempMovieList)
@@ -217,7 +211,7 @@ class CustomerActions
                                 if (tempMovie.getMovieName().equals(selectedMovie))
                                 {
                                     selectedMovieIsCorrect = true;
-                                    ticketBooking(s, tempMovieList,currentCustomer); // and call the ticketBooking function for future process
+                                    ticketBooking(tempMovieList,currentCustomer); // and call the ticketBooking function for future process
                                     return;
                                 }
                             }
@@ -239,12 +233,12 @@ class CustomerActions
     }
 
     // method to change the customer's location and date if needed
-    public static int changeDateOrLocation(Scanner s,Customer currentCustomer)
+    public static int changeDateOrLocation(Customer currentCustomer)
     {
         System.out.println();
         System.out.println("1. CHANGE DATE\n2. CHANGE LOCATION\n3. CHANGE BOTH\n4. EXIT"); // print the choices
         System.out.print("Enter Your Choice: ");
-        int choice = Integer.parseInt(s.nextLine()); // get the choice
+        int choice = Integer.parseInt(BookMyShowActions.s.nextLine()); // get the choice
         boolean movieFound = false;
         LocalDate currentDate = LocalDate.now(); // gets the current date
         ArrayList<String> printedMovies = new ArrayList<>(); // stores the already printed data to later check that data are not repeatedly printed
@@ -254,7 +248,7 @@ class CustomerActions
             {
                 System.out.println();
                 System.out.print("Enter The Date: ");
-                String date = s.nextLine(); // get the date that customer wants to change
+                String date = BookMyShowActions.s.nextLine(); // get the date that customer wants to change
                 LocalDate localDate = LocalDate.parse(date, BookMyShow.getLocalDateFormatter());
                 if(localDate.isBefore(currentDate)) // checks if the user given date is not a past date
                 {
@@ -291,7 +285,7 @@ class CustomerActions
             {
                 System.out.println();
                 System.out.print("Enter The Location: ");
-                String changeLocation = s.nextLine(); // get the location that customer wants to change
+                String changeLocation = BookMyShowActions.s.nextLine(); // get the location that customer wants to change
                 System.out.println();
                 for (ArrayList<Movie> tempMovieList : BookMyShow.getMovieHashMap().values())
                 {
@@ -325,7 +319,7 @@ class CustomerActions
             {
                 System.out.println();
                 System.out.print("Enter The Date: ");
-                String date = s.nextLine(); // get the date that customer wants to change
+                String date = BookMyShowActions.s.nextLine(); // get the date that customer wants to change
                 LocalDate localDate = LocalDate.parse(date, BookMyShow.getLocalDateFormatter());
                 if(localDate.isBefore(currentDate)) // checks if the user given date is not a past date
                 {
@@ -333,7 +327,7 @@ class CustomerActions
                     continue;
                 }
                 System.out.print("Enter The Location: ");
-                String location = s.nextLine(); // get the location that customer wants to change
+                String location = BookMyShowActions.s.nextLine(); // get the location that customer wants to change
                 System.out.println();
                 for (ArrayList<Movie> tempMovieList : BookMyShow.getMovieHashMap().values())
                 {
@@ -376,7 +370,7 @@ class CustomerActions
     }
 
     // method for ticket booking
-    public static void ticketBooking(Scanner s, ArrayList<Movie> selectedMovie,Customer currentCustomer)
+    public static void ticketBooking(ArrayList<Movie> selectedMovie,Customer currentCustomer)
     {
         label : while(true)
         {
@@ -406,7 +400,7 @@ class CustomerActions
             }
 
             System.out.print("Enter The Theatre You Want: ");
-            String theatreName = s.nextLine(); // get the theatre name that user want from the printed available theatres
+            String theatreName = BookMyShowActions.s.nextLine(); // get the theatre name that user want from the printed available theatres
             for(Movie tempMovie :selectedMovie)
             {
                 if(tempMovie.getTheatre().getTheatreName().equals(theatreName))
@@ -430,7 +424,7 @@ class CustomerActions
             while(true)
             {
                 System.out.print("Enter The Timing You Want: ");
-                String startingTime = s.nextLine(); // get the show starting time
+                String startingTime = BookMyShowActions.s.nextLine(); // get the show starting time
                 LocalTime localStartingTime = LocalTime.parse(startingTime,BookMyShow.getLocalTimeFormatter());
                 for(Movie tempMovie : selectedMovie)
                 {
@@ -445,7 +439,7 @@ class CustomerActions
                         {
                             System.out.println();
                             System.out.print("Enter The How Many Seats You Want To Book: ");
-                            int seatsCount = Integer.parseInt(s.nextLine()); // get how many ticket the customer want to book
+                            int seatsCount = Integer.parseInt(BookMyShowActions.s.nextLine()); // get how many ticket the customer want to book
                             if (seatsCount < 0)
                             {
                                 System.out.println("Enter The Valid Seat Count!");
@@ -454,7 +448,7 @@ class CustomerActions
                             // store the ticket data in a Ticket object for future process
                             Tickets tickets = new Tickets(tempMovie.getTheatre().getTheatreName(),tempMovie.getMovieName(),tempMovie.getTheatre().getTheatreLocation(),tempMovie.getScreen().getScreenName(),tempMovie.getShow().getStartingTime(),tempMovie.getShow().getPrice() * seatsCount);
                             // call the selectSeats method and store the value in the variable status that the function return
-                            int status = selectSeats(s,tempMovie.getScreen().getSeatsCount(), seatsCount, tempMovie.getScreen().getGrid(), tempMovie.getShow().getSeatsGrid(),tickets);
+                            int status = selectSeats(tempMovie.getScreen().getSeatsCount(), seatsCount, tempMovie.getScreen().getGrid(), tempMovie.getShow().getSeatsGrid(),tickets);
 
                             // call selectedSeats function to calculate and identify and update the given seatNumbers in a proper way (and also stores the value that the function returns)
                             if (status == 1) // if status is equal to 1
@@ -488,7 +482,7 @@ class CustomerActions
     }
 
     // method to calculate,identify and update the given seatNumbers in a proper way in a seatsGrid HashMap
-    public static int selectSeats( Scanner s,int screenSeatsCount,int seatsCount, String grid, HashMap<Character, ArrayList<String>> seatsGrid,Tickets tickets)
+    public static int selectSeats( int screenSeatsCount,int seatsCount, String grid, HashMap<Character, ArrayList<String>> seatsGrid,Tickets tickets)
     {
         // create a HashMap to store the values grids like a duplicate one(we use this hashMap to first edit the changes in it and then ask the confirmation from the user and then add that changes in the duplicate to seats grid)
         HashMap<Character,ArrayList<String>> duplicateSeats = new HashMap<>();
@@ -508,7 +502,7 @@ class CustomerActions
         {
             System.out.println();
             System.out.print("Enter Seat Number " + (i+1) + ": ");
-            String seatNumber = s.nextLine(); // get the seat number
+            String seatNumber = BookMyShowActions.s.nextLine(); // get the seat number
             seatNumbers[i] = seatNumber; // store the seat number one by one in the string array
 
             // separate the seat row and numbers of a tempSeats by CharAt() to get the seat row (character) and use subString() to get the seat number (int)
@@ -574,7 +568,7 @@ class CustomerActions
             System.out.println();
             System.out.println("Do You Want Book The Tickets?");
             System.out.print("(yes/no): ");
-            String choice = s.nextLine(); // get a choice to finally verify that the user want to book tickets
+            String choice = BookMyShowActions.s.nextLine(); // get a choice to finally verify that the user want to book tickets
             if(choice.equalsIgnoreCase("yes")) // if user print yes to book then duplicate hashmap is make the changes(booked seats) in the original seatsGrid hashmap one by one
             {
                 tickets.setBookedSeats(seatNumbers);

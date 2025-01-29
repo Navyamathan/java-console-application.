@@ -22,20 +22,13 @@ class BookMyShowActions
             if (n == 1) // if the user choice is 1
             {
                 BookMyShow.getAdminArrayList().add( new Admin("ADMIN","123")); // add a default data to the Admin ArrayList
-                Admin currentAdmin = AdminActions.adminLogin(s); // call a adminLogin function and store value in the variable that function returns
+                Admin currentAdmin = AdminActions.adminLogin(); // call a adminLogin function and store value in the variable that function returns
 
                 if (currentAdmin != null ) // if currentAdmin is null
                 {
-                    if (currentAdmin.getPassword() == null)  // if only currentAdmin password is null
-                    {
-                        System.out.println("Access Denied. You Have Used All Login Attempts!");
-                    }
-                    else // if the condition is false then else block will be executed
-                    {
-                        System.out.println();
-                        System.out.println("Login Successful!");
-                        AdminActions.adminAction(s); // after login call the adminActions to step into future process
-                    }
+                    System.out.println();
+                    System.out.println("Login Successful!");
+                    AdminActions.adminAction(); // after login call the adminActions to step into future process
                 }
                 else // if the condition is false then else block will be executed
                 {
@@ -46,20 +39,14 @@ class BookMyShowActions
 
             else if (n == 2) // if the user choice is 2
             {
-                Customer currentCustomer = CustomerActions.loginProcess(s); // call a customerLogin function and store value in the variable that function returns
+                Customer currentCustomer = CustomerActions.loginProcess(); // call a customerLogin function and store value in the variable that function returns
+
                 if (currentCustomer != null ) // if currentCustomer is null
                 {
-                    if (currentCustomer.getPassword() == null) // if only currentCustomer password is null
-                    {
-                        System.out.println("Access Denied. You Have Used All Login Attempts!");
-                    }
-                    else // if the condition is false then else block will be executed
-                    {
-                        System.out.println();
-                        System.out.println("Login Successful!");
-                        CustomerActions.availableMovies(s,currentCustomer); // call the availableMovies function to print available movies after login
-                        CustomerActions.customerAction(s, currentCustomer); // after login call the customerActions to step into future process
-                    }
+                    System.out.println();
+                    System.out.println("Login Successful!");
+                    CustomerActions.availableMovies(currentCustomer); // call the availableMovies function to print available movies after login
+                    CustomerActions.customerAction(currentCustomer); // after login call the customerActions to step into future process
                 }
                 else // if the condition is false then else block will be executed
                 {

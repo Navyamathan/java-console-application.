@@ -2,42 +2,33 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 // creating a class for the Admin Actions
 class AdminActions
 {
     //this function manage the log in process
-    public static Admin adminLogin(Scanner s) // get the parameters values when this function call (this function also returns the object Admin)
+    public static Admin adminLogin() // get the parameters values when this function call (this function also returns the object Admin)
     {
-        int attempts = 0; // variable to manage the attempts of trying to log in
         System.out.println("WELCOME TO ADMIN LOGIN SYSTEM...");
 
         for (Admin tempAccount : BookMyShow.getAdminArrayList())  // for loop for checking the username and password one by one in the Admin arraylist
         {
-            while (attempts < 3) // this loop will exit when attempts is greater than 3
+            while(true)
             {
                 System.out.println();
                 System.out.print("Enter User Name: ");
-                String username = s.nextLine(); // get the userName
+                String username = BookMyShowActions.s.nextLine(); // get the userName
                 if (username.equals(tempAccount.getUserName())) // checks if the userName is admin ArrayList
                 {
                     System.out.print("Enter Password: ");
-                    String password = s.nextLine(); // get the password
+                    String password = BookMyShowActions.s.nextLine(); // get the password
                     if (password.equals(tempAccount.getPassword())) // checks if the password is admin ArrayList
                     {
                         return tempAccount; // return the Admin object
                     }
                     else // if the password is wrong
                     {
-                        attempts++; // increment the attempts
-                        System.out.println();
-                        System.out.println("Wrong Password!");
-                        if (attempts == 3) // if attempts is equal to 3
-                        {
-                            Admin ob = new Admin(null, null); // create a new Admin object a values of null
-                            return ob; // return the empty object
-                        }
+                        System.out.println("Enter The Valid Password!");
                     }
                 }
                 else // if userName is wrong then else will be executed
@@ -50,7 +41,7 @@ class AdminActions
     }
 
     //this function display the choices and execute based on the choices the user give
-    public static void adminAction(Scanner s)
+    public static void adminAction()
     {
         System.out.println();
         System.out.println("YOU ENTER THE ADMIN BOARD...");
@@ -59,11 +50,10 @@ class AdminActions
             System.out.println();
             System.out.println("1. ADD THEATRE \n2. VIEW THEATRE DETAILS \n3. ADD MOVIE \n4. VIEW MOVIE \n5. EXIT"); // print the choice
             System.out.print("Enter Your Choice: ");
-            int choice = Integer.parseInt(s.nextLine()); // get the choice
-            System.out.println();
+            int choice = Integer.parseInt(BookMyShowActions.s.nextLine()); // get the choice
             if (choice == 1)
             {
-                addTheatre(s); // call the addTheatre method to add a theatres in a theatre array list
+                addTheatre(); // call the addTheatre method to add a theatres in a theatre array list
             }
             else if(choice == 2)
             {
@@ -71,7 +61,7 @@ class AdminActions
             }
             else if (choice == 3)
             {
-                addMovie(s); // call the addMovie method to add a movies in a movie array list
+                addMovie(); // call the addMovie method to add a movies in a movie array list
             }
             else if (choice == 4)
             {
@@ -89,35 +79,91 @@ class AdminActions
     }
 
     // method for add a theatre and screen to the theatre and screen HashMap
-    public static void addTheatre(Scanner s)
+    public static void addTheatre()
     {
+        String theatreName;
+        int screenCount;
         System.out.println("To Add Theatres Enter The Following Details...");
         System.out.println();
-        System.out.print("Enter Theater Name: ");
-        String theatreName = s.nextLine(); // gets the theatre name
+
+        while(true) // loop to check theatre name
+        {
+            System.out.print("Enter Theater Name: ");
+            theatreName = BookMyShowActions.s.nextLine(); // gets the theatre name
+            if (BookMyShow.getTheatreHashMap().containsKey(theatreName))
+            {
+                System.out.println("This Theatre Is Already Exist, Enter The Valid Theatre Name!");
+            }
+            else
+            {
+                break;
+            }
+        }
+
         System.out.print("Enter Location Of The Theater: ");
-        String theatreLocation = s.nextLine(); // gets the theatre location
-        System.out.print("Enter Theater Screen Count: ");
-        int screenCount = Integer.parseInt(s.nextLine()); // gets the screen count
-        Theatre t = new Theatre(theatreName, theatreLocation, screenCount); // create a new theatre object and put the theatre data in it
-        BookMyShow.getTheatreHashMap().put(theatreName,t); // add a created object to the theatre HashMap
+        String theatreLocation = BookMyShowActions.s.nextLine(); // gets the theatre location
+
+        while(true) // loop to check screen count
+        {
+            System.out.print("Enter Theater Screen Count: ");
+            screenCount = Integer.parseInt(BookMyShowActions.s.nextLine()); // gets the screen count
+            if(screenCount <= 0)
+            {
+                System.out.println("Enter The Valid Screen Count!");
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        Theatre theatre = new Theatre(theatreName, theatreLocation, screenCount); // create a new theatre object and put the theatre data in it
+        BookMyShow.getTheatreHashMap().put(theatreName, theatre); // add a created object to the theatre HashMap
+
         for (int i = 1; i <= screenCount; i++) // for loop to get the data for screen and store the screen data into the screen HashMap
         {
+            String screenName;
+            int seatsCount;
+            String seatsGrid;
             System.out.println();
             System.out.println("Enter Details About Screen Number " + i + "...");
-            System.out.print("Enter Screen Name: "); // gets the screen name
-            String screenName = s.nextLine();
-            System.out.print("Enter The Number Of Seats: ");
-            int seatsCount = Integer.parseInt(s.nextLine()); // gets the number of seats
-            String seatsGrid;
-            while(true) // while loop for get the seats grid repeatedly until user enter the valid seats grid
+
+            while(true) // loop to check screen name
+            {
+                System.out.print("Enter Screen Name: "); // gets the screen name
+                screenName = BookMyShowActions.s.nextLine();
+                if(theatre.getScreenHashMap().containsKey(screenName))
+                {
+                    System.out.println("This Screen Is Already Exist, Enter The Valid Screen Name!");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            while(true) // loop to check seat number
+            {
+                System.out.print("Enter The Number Of Seats: ");
+                seatsCount = Integer.parseInt(BookMyShowActions.s.nextLine()); // gets the number of seats
+                if(seatsCount <= 0)
+                {
+                    System.out.println("Enter The Valid Seat Count!");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            while (true) // while loop for get the seats grid repeatedly until user enter the valid seats grid
             {
                 System.out.print("Enter Seats Grid: ");
-                seatsGrid = s.nextLine(); // gets the seats grid as a string
-                HashMap<Character,ArrayList<String>> seats = Utilities.calculateGrid(seatsCount,seatsGrid); // call the calculateGrid function to calculate the String grid to valid seatsGrid HashMap
-                if(seats!=null) // checks if the seats is not null
+                seatsGrid = BookMyShowActions.s.nextLine(); // gets the seats grid as a string
+                HashMap<Character, ArrayList<String>> seats = Utilities.calculateGrid(seatsCount, seatsGrid); // call the calculateGrid function to calculate the String grid to valid seatsGrid HashMap
+                if (seats != null) // checks if the seats is not null
                 {
-                    t.getScreenHashMap().put(screenName, new Screen(screenName,seatsCount,seatsGrid,seats)); // put the key and values for screen HashMap
+                    theatre.getScreenHashMap().put(screenName, new Screen(screenName, seatsCount, seatsGrid, seats)); // put the key and values for screen HashMap
                     break; // breaks the while loop
                 }
             }
@@ -151,7 +197,7 @@ class AdminActions
     }
 
     // method to get movies details and store it into the movie HashMap
-    public static void addMovie(Scanner s)
+    public static void addMovie()
     {
         Screen screen = null;
         Theatre theatre = null;
@@ -165,20 +211,20 @@ class AdminActions
         System.out.println("Enter the Following Details to Add Movie...");
         System.out.println();
         System.out.print("Enter The Movie Name: ");
-        String movieName = s.nextLine(); // get the movie name
+        String movieName = BookMyShowActions.s.nextLine(); // get the movie name
         System.out.print("Enter The Date( dd_MM_yyyy ): ");
-        String date = s.nextLine(); // get the movie date
+        String date = BookMyShowActions.s.nextLine(); // get the movie date
         localDate = LocalDate.parse(date,BookMyShow.getLocalDateFormatter());
         System.out.print("Enter The Duration( HH:mm ): ");
-        String duration = s.nextLine(); // get the duration of the movie
+        String duration = BookMyShowActions.s.nextLine(); // get the duration of the movie
         LocalTime localTime = LocalTime.parse(duration,BookMyShow.getLocalTimeFormatter());
         System.out.print("Enter the Price: ");
-        long price = Long.parseLong(s.nextLine()); // get the movie price
+        long price = Long.parseLong(BookMyShowActions.s.nextLine()); // get the movie price
 
         while(true) // while loop will break when the theatreFound is true
         {
             System.out.print("Enter The Location: ");
-            location = s.nextLine(); // get the location
+            location = BookMyShowActions.s.nextLine(); // get the location
 
             for(Theatre tempTheatre : BookMyShow.getTheatreHashMap().values()) // for loop to print all available theatre based on the given location
             {
@@ -205,7 +251,7 @@ class AdminActions
         while(true) // loop runs until the theatre are found
         {
             System.out.print("Enter The Name Of The Theatre You Want To Add: ");
-            theatreName = s.nextLine(); // get the theatre which is user want in the printed available theatre
+            theatreName = BookMyShowActions.s.nextLine(); // get the theatre which is user want in the printed available theatre
             if (BookMyShow.getTheatreHashMap().containsKey(theatreName)) // check the theatre name is in the theatre HashMap
             {
                 System.out.println("Available Screens... ");
@@ -228,7 +274,7 @@ class AdminActions
         while(true) // loop runs until the screen are found
         {
             System.out.print("Enter The Name Of The Screen You Want To Add: ");
-            screenName = s.nextLine(); // get the name of the screen that user want in the printed available screens
+            screenName = BookMyShowActions.s.nextLine(); // get the name of the screen that user want in the printed available screens
 
             if (theatre.getScreenHashMap().containsKey(screenName)) // checks if the screen name found in the screen HashMap
             {
@@ -250,7 +296,7 @@ class AdminActions
         {
             boolean flag = false;
             System.out.print("Enter The Show Starting Time( HH:mm ): ");
-            String startingTime = s.nextLine(); // get the show starting time
+            String startingTime = BookMyShowActions.s.nextLine(); // get the show starting time
             LocalTime localStartingTime = LocalTime.parse(startingTime,BookMyShow.getLocalTimeFormatter()); // convert the given string time into LocalTime (which is built in function)
             LocalTime localEndingTime = localStartingTime.plusHours(localTime.getHour()).plusMinutes(localTime.getMinute()).plusMinutes(30); // calculate the endTime by the given startingTime
             // for loop to check that the same screen don't have a show in same time range
