@@ -1,3 +1,5 @@
+import javax.jws.soap.SOAPBinding;
+import java.lang.reflect.AccessibleObject;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -83,6 +85,7 @@ class AdminActions
     {
         String theatreName;
         int screenCount;
+        System.out.println();
         System.out.println("To Add Theatres Enter The Following Details...");
         System.out.println();
 
@@ -208,6 +211,7 @@ class AdminActions
         String theatreName;
         String screenName;
         boolean theatreFound = false;
+        System.out.println();
         System.out.println("Enter the Following Details to Add Movie...");
         System.out.println();
         System.out.print("Enter The Movie Name: ");
@@ -299,6 +303,7 @@ class AdminActions
             String startingTime = BookMyShowActions.s.nextLine(); // get the show starting time
             LocalTime localStartingTime = LocalTime.parse(startingTime,BookMyShow.getLocalTimeFormatter()); // convert the given string time into LocalTime (which is built in function)
             LocalTime localEndingTime = localStartingTime.plusHours(localTime.getHour()).plusMinutes(localTime.getMinute()).plusMinutes(30); // calculate the endTime by the given startingTime
+
             // for loop to check that the same screen don't have a show in same time range
             for (Show tempShow : screen.getShowHashSet())
             {
@@ -327,13 +332,13 @@ class AdminActions
             }
             else // if flag false then there is no show is existed in that time so we can add shw data in the show arrayList
             {
-                show = new Show(localDate,location,localStartingTime, localEndingTime,showSeatsGrid,price); // in show object store the show data
+                show = new Show(localDate,localStartingTime, localEndingTime,showSeatsGrid,price); // in show object store the show data
                 screen.getShowHashSet().add(show); // add show object in show arrayList
                 break; // breaks the while loop
             }
         }
 
-        Movie tempMovie = new Movie(movieName,localTime,theatre,screen,show); // create a movie abject variable and store movie data we get all along in this object
+        Movie tempMovie = new Movie(movieName,localDate,localTime,location,theatre,screen,show); // create a movie abject variable and store movie data we get all along in this object
         // this is true when the given movie name is already exist so here we don't have to create a new arrayList we just have to get the existing arrayList add the tempMovie in it
         if(BookMyShow.getMovieHashMap().containsKey(movieName))
         {
@@ -352,21 +357,24 @@ class AdminActions
     // method is to print all movie data in the movie HashMap
     public static void viewMovie()
     {
+        System.out.println();
         System.out.println("...The Details Of Movies...");
-        for(ArrayList<Movie> tempMovieList : BookMyShow.getMovieHashMap().values()) // loop for get the movie HashMap's value which is movie arrayList
+        for(String tempMovieKey : BookMyShow.getMovieHashMap().keySet()) // loop for get the movie HashMap's value which is movie arrayList
         {
-            for(Movie tempMovie : tempMovieList) // loop for get the movie Arraylist one by one to get all the shows in the movie arrayList
+            System.out.println();
+            System.out.println("Movie Name: " + tempMovieKey);
+            System.out.println("----------------------------");
+            for(Movie tempMovie : BookMyShow.getMovieHashMap().get(tempMovieKey)) // loop for get the movie Arraylist one by one to get all the shows in the movie arrayList
             {
                 System.out.println();
-                System.out.println("Movie Name: " + tempMovie.getMovieName());
-                System.out.println("Location: " + tempMovie.getShow().getLocation());
+                System.out.println("Location: " + tempMovie.getLocation());
+                System.out.println("Date: " + tempMovie.getDate());
                 System.out.println("Duration: " + tempMovie.getDuration());
+                System.out.println("Price: " + tempMovie.getShow().getPrice());
                 System.out.println("Theatre: " + tempMovie.getTheatre().getTheatreName());
                 System.out.println("Screen: " + tempMovie.getScreen().getScreenName());
-                System.out.println("Date: " + tempMovie.getShow().getDate());
                 System.out.println("Show Starting Time: " + tempMovie.getShow().getStartingTime());
                 System.out.println("Show Ending Time: " + tempMovie.getShow().getEndingTime());
-                System.out.println("Price: " + tempMovie.getShow().getPrice());
             }
         }
     }

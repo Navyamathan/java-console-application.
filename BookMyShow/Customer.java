@@ -33,6 +33,11 @@ public class Customer
         return location;
     }
 
+    public void setLocation(String location)
+    {
+        this.location = location;
+    }
+
     public ArrayList<Tickets> getTicketList()
     {
         return ticketList;

@@ -8,17 +8,15 @@ import java.util.Objects;
 public class Show
 {
     private LocalDate date; // stores the show date
-    private String location; // stores the show location
     private LocalTime startingTime; // stores the show starting time
     private LocalTime endingTime; // stores the show ending time
     private HashMap<Character, ArrayList<String>> seatsGrid; // creating a hashmap to store the seats arrangements in a show
     private long price; // stores the price of the show
 
     //  create a constructor to assign a values to the variables by passing a parameter
-    public Show(LocalDate date,String location,LocalTime startingTime, LocalTime endingTime,HashMap<Character, ArrayList<String>> seatsGrid, long price)
+    public Show(LocalDate date,LocalTime startingTime, LocalTime endingTime,HashMap<Character, ArrayList<String>> seatsGrid, long price)
     {
         this.date = date;
-        this.location = location;
         this.startingTime = startingTime;
         this.endingTime = endingTime;
         this.seatsGrid = seatsGrid;
@@ -30,11 +28,6 @@ public class Show
     public LocalDate getDate()
     {
         return date;
-    }
-
-    public String getLocation()
-    {
-        return location;
     }
 
     public LocalTime getStartingTime()
