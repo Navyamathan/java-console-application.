@@ -57,7 +57,7 @@ class BookMyShowActions
                     {
                         System.out.println();
                         System.out.println("Login Successful!");
-                        CustomerActions.availableMovies(s,currentCustomer);
+                        CustomerActions.availableMovies(s,currentCustomer); // call the availableMovies function to print available movies after login
                         CustomerActions.customerAction(s, currentCustomer); // after login call the customerActions to step into future process
                     }
                 }

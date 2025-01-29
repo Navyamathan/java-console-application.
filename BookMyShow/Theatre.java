@@ -1,22 +1,23 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
+// pojo Theatre class to maintain and manage the theatre data
 public class Theatre
 {
-    private String theatreName;
-    private String theatreLocation;
-    private int screenCount;
-    private HashMap<String, Screen> screenHashMap = new HashMap<>();
-    private static HashMap<String, ArrayList<Movie>>  movieHashMap = new HashMap<>();
+    private String theatreName; // stores the theatre name
+    private String theatreLocation; // stores the theatre location
+    private int screenCount; // stores the screen count of the theatre
+    private HashMap<String, Screen> screenHashMap = new HashMap<>(); // creating a hashmap to store the screens data under the theatre
 
+    //  create a constructor to assign a values to the variables by passing a parameter
     public Theatre(String theatreName,String theatreLocation, int screenCount)
     {
         this.theatreName = theatreName;
         this.theatreLocation = theatreLocation;
         this.screenCount = screenCount;
     }
+
+    // getters of the theatre data
 
     public String getTheatreName()
     {
@@ -38,9 +39,5 @@ public class Theatre
         return screenHashMap;
     }
 
-    public static HashMap<String, ArrayList<Movie>> getMovieHashMap()
-    {
-        return movieHashMap;
-    }
 
 }

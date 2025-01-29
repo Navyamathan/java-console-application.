@@ -1,15 +1,17 @@
 import java.time.LocalTime;
 
+// pojo Tickets class to maintain and manage the tickets data
 public class Tickets
 {
-    private String theatreName;
-    private String movieName;
-    private String location;
-    private String screenName;
-    private LocalTime startingTime;
-    private String[] bookedSeats;
-    private long ticketPrice;
+    private String theatreName; // store the theatre name
+    private String movieName; // stores the movie name
+    private String location; // stores the theatre location
+    private String screenName; // store the screen name
+    private LocalTime startingTime; // store the show starting time
+    private String[] bookedSeats; // store the booked seat numbers in a String array
+    private long ticketPrice; // store the price of the booked seats
 
+    //  create a constructor to assign a values to the variables by passing a parameter
     public Tickets(String theatreName, String movieName, String location, String screenName, LocalTime startingTime, long ticketPrice)
     {
         this.theatreName = theatreName;
@@ -19,6 +21,8 @@ public class Tickets
         this.startingTime = startingTime;
         this.ticketPrice = ticketPrice;
     }
+
+    // getters and setters of the tickets data
 
     public String getTheatreName()
     {

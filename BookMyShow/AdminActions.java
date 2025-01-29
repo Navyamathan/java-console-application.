@@ -63,23 +63,23 @@ class AdminActions
             System.out.println();
             if (choice == 1)
             {
-                addTheatre(s);
+                addTheatre(s); // call the addTheatre method to add a theatres in a theatre array list
             }
             else if(choice == 2)
             {
-                viewTheatre();
+                viewTheatre(); // call the viewTheatre method to view all the added theatres
             }
             else if (choice == 3)
             {
-                addMovie(s);
+                addMovie(s); // call the addMovie method to add a movies in a movie array list
             }
             else if (choice == 4)
             {
-                viewMovie();
+                viewMovie(); // call the viewMovie method to view all the added Movies
             }
             else if (choice == 5)
             {
-                break;
+                break; // if the user choice is 5 then break the loop and exit
             }
             else
             {
@@ -253,6 +253,7 @@ class AdminActions
             String startingTime = s.nextLine(); // get the show starting time
             LocalTime localStartingTime = LocalTime.parse(startingTime,BookMyShow.getLocalTimeFormatter()); // convert the given string time into LocalTime (which is built in function)
             LocalTime localEndingTime = localStartingTime.plusHours(localTime.getHour()).plusMinutes(localTime.getMinute()).plusMinutes(30); // calculate the endTime by the given startingTime
+            // for loop to check that the same screen don't have a show in same time range
             for (Show tempShow : screen.getShowHashSet())
             {
                 if (!tempShow.getStartingTime().isBefore(localEndingTime) && !tempShow.getEndingTime().isAfter(localStartingTime))
@@ -260,7 +261,8 @@ class AdminActions
                     flag = true;
                 }
             }
-            for(ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values())
+            //The for loop ensures that multiple screens in the same theater do not project the movie at the same time.
+            for(ArrayList<Movie> tempMovieList : BookMyShow.getMovieHashMap().values())
             {
                 for (Movie tempMovie : tempMovieList)
                 {
@@ -287,16 +289,16 @@ class AdminActions
 
         Movie tempMovie = new Movie(movieName,localTime,theatre,screen,show); // create a movie abject variable and store movie data we get all along in this object
         // this is true when the given movie name is already exist so here we don't have to create a new arrayList we just have to get the existing arrayList add the tempMovie in it
-        if(Theatre.getMovieHashMap().containsKey(movieName))
+        if(BookMyShow.getMovieHashMap().containsKey(movieName))
         {
-            Theatre.getMovieHashMap().get(movieName).add(tempMovie);
+            BookMyShow.getMovieHashMap().get(movieName).add(tempMovie);
             System.out.println("Movie Added Successfully!");
         }
         // this block will execute when the given movie name is not already exist so here we have to create a new arrayList and add the tempMovie in it
         else
         {
-            Theatre.getMovieHashMap().put(movieName,new ArrayList<>());
-            Theatre.getMovieHashMap().get(movieName).add(tempMovie);
+            BookMyShow.getMovieHashMap().put(movieName,new ArrayList<>());
+            BookMyShow.getMovieHashMap().get(movieName).add(tempMovie);
             System.out.println("Movie Added Successfully!");
         }
     }
@@ -305,7 +307,7 @@ class AdminActions
     public static void viewMovie()
     {
         System.out.println("...The Details Of Movies...");
-        for(ArrayList<Movie> tempMovieList : Theatre.getMovieHashMap().values()) // loop for get the movie HashMap's value which is movie arrayList
+        for(ArrayList<Movie> tempMovieList : BookMyShow.getMovieHashMap().values()) // loop for get the movie HashMap's value which is movie arrayList
         {
             for(Movie tempMovie : tempMovieList) // loop for get the movie Arraylist one by one to get all the shows in the movie arrayList
             {
