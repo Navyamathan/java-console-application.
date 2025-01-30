@@ -1,5 +1,3 @@
-import javax.jws.soap.SOAPBinding;
-import java.lang.reflect.AccessibleObject;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -298,41 +296,46 @@ class AdminActions
 
         while(true) // loop runs util the given show data is not already exist
         {
-            boolean flag = false;
+            boolean sameScreenFlag = false;
+            boolean differentScreenFlag = false;
             System.out.print("Enter The Show Starting Time( HH:mm ): ");
             String startingTime = BookMyShowActions.s.nextLine(); // get the show starting time
             LocalTime localStartingTime = LocalTime.parse(startingTime,BookMyShow.getLocalTimeFormatter()); // convert the given string time into LocalTime (which is built in function)
             LocalTime localEndingTime = localStartingTime.plusHours(localTime.getHour()).plusMinutes(localTime.getMinute()).plusMinutes(30); // calculate the endTime by the given startingTime
 
-            // for loop to check that the same screen don't have a show in same time range
+            // for loop to check that the same screen don't have a show in same time range and there is any other screen starts in the same starting time as the user given starting time
             for (Show tempShow : screen.getShowHashSet())
             {
-                if (!tempShow.getStartingTime().isBefore(localEndingTime) && !tempShow.getEndingTime().isAfter(localStartingTime))
+                if (tempShow.getDate().equals(localDate)) // checks is the date of the show already exist and date of the show admin provide is equal or not
                 {
-                    flag = true;
-                }
-            }
-            //The for loop ensures that multiple screens in the same theater do not project the movie at the same time.
-            for(ArrayList<Movie> tempMovieList : BookMyShow.getMovieHashMap().values())
-            {
-                for (Movie tempMovie : tempMovieList)
-                {
-                    if(tempMovie.getTheatre().getTheatreName().equals(theatreName) && tempMovie.getShow().getDate().equals(localDate))
+                    if (tempShow.getScreenName().equals(screenName)) // checks that in the given screen is there is any other show is already exist in that same screen
                     {
-                        if (localStartingTime.equals(tempMovie.getShow().getStartingTime()))
+                        if (tempShow.getStartingTime().isBefore(localEndingTime) && tempShow.getEndingTime().isAfter(localStartingTime)) // checks the time range by using isBefore and isAfter method
                         {
-                            flag = true;
+                            sameScreenFlag = true;
+                        }
+                    }
+                    if (!tempShow.getScreenName().equals(screenName))
+                    {
+                        if (localStartingTime.equals(tempShow.getStartingTime())) // checks that the starting time with the show already exist but in different screen
+                        {
+                            differentScreenFlag = true;
                         }
                     }
                 }
             }
-            if(flag) // if flag is true then the show is already exist
+
+            if(sameScreenFlag) // if flag is true then the show is already exist int this time range
             {
-                System.out.println("Show Is Already Exist In Given Range!");
+                System.out.println("The Show Is Already Exist In Given Time Range, Enter A Valid Starting Time!");
+            }
+            else if(differentScreenFlag) // if flag is true when there is any other screen starts in the same starting time as the user given starting time
+            {
+                System.out.println("The Time You Provided Is The starting Time Of Another Screen's Show, Enter The Valid Starting Time!");
             }
             else // if flag false then there is no show is existed in that time so we can add shw data in the show arrayList
             {
-                show = new Show(localDate,localStartingTime, localEndingTime,showSeatsGrid,price); // in show object store the show data
+                show = new Show(localDate,localStartingTime, localEndingTime,screenName,showSeatsGrid,price); // in show object store the show data
                 screen.getShowHashSet().add(show); // add show object in show arrayList
                 break; // breaks the while loop
             }

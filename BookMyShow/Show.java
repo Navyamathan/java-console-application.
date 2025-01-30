@@ -10,15 +10,17 @@ public class Show
     private LocalDate date; // stores the show date
     private LocalTime startingTime; // stores the show starting time
     private LocalTime endingTime; // stores the show ending time
+    private String screenName;
     private HashMap<Character, ArrayList<String>> seatsGrid; // creating a hashmap to store the seats arrangements in a show
     private long price; // stores the price of the show
 
     //  create a constructor to assign a values to the variables by passing a parameter
-    public Show(LocalDate date,LocalTime startingTime, LocalTime endingTime,HashMap<Character, ArrayList<String>> seatsGrid, long price)
+    public Show(LocalDate date,LocalTime startingTime, LocalTime endingTime,String screenName,HashMap<Character, ArrayList<String>> seatsGrid, long price)
     {
         this.date = date;
         this.startingTime = startingTime;
         this.endingTime = endingTime;
+        this.screenName = screenName;
         this.seatsGrid = seatsGrid;
         this.price = price;
     }
@@ -38,6 +40,11 @@ public class Show
     public LocalTime getEndingTime()
     {
         return endingTime;
+    }
+
+    public String getScreenName()
+    {
+        return screenName;
     }
 
     public HashMap<Character, ArrayList<String>> getSeatsGrid()

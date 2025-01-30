@@ -1,4 +1,3 @@
-import java.time.LocalDate;
 import java.util.Scanner;
 
 // class for manage the BookMyShow Actions
@@ -46,8 +45,7 @@ class BookMyShowActions
                 {
                     System.out.println();
                     System.out.println("Login Successful!");
-                    LocalDate currentDate = LocalDate.now();
-                    CustomerActions.availableMovies(currentCustomer,currentDate); // call the availableMovies function to print available movies after login
+                    CustomerActions.availableMovies(currentCustomer); // call the availableMovies function to print available movies after login
                     CustomerActions.customerAction(currentCustomer); // after login call the customerActions to step into future process
                 }
                 else // if the condition is false then else block will be executed

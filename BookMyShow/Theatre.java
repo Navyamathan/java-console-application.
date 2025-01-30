@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 // pojo Theatre class to maintain and manage the theatre data

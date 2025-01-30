@@ -1,4 +1,5 @@
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 // pojo Tickets class to maintain and manage the tickets data
 public class Tickets
@@ -8,7 +9,7 @@ public class Tickets
     private String location; // stores the theatre location
     private String screenName; // store the screen name
     private LocalTime startingTime; // store the show starting time
-    private String[] bookedSeats; // store the booked seat numbers in a String array
+    private ArrayList<String> bookedSeats; // store the booked seat numbers in a String array
     private long ticketPrice; // store the price of the booked seats
 
     //  create a constructor to assign a values to the variables by passing a parameter
@@ -49,12 +50,12 @@ public class Tickets
         return startingTime;
     }
 
-    public String[] getBookedSeats()
+    public ArrayList<String> getBookedSeats()
     {
         return bookedSeats;
     }
 
-    public void setBookedSeats(String[] bookedSeats)
+    public void setBookedSeats(ArrayList<String> bookedSeats)
     {
        this.bookedSeats = bookedSeats;
     }
